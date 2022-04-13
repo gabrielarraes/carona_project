@@ -10,7 +10,7 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
   return (
     <section className="flex flex-col md:flex-row h-screen items-center">
       <div className="h-screen bg-blue-800 lg:block md:w-1/2 xl:w-2/3 ">
-        <img src="logo.svg" alt=" n ta funcionando" className="w-full h-full object-fill"/>
+        <img src="carro.jpg" alt=" n ta funcionando" className="w-full h-full object-fill"/>
       </div>
 
       <div className="bg-white w-full md:w-1/2 xl:w-1/3 px-7 lg:px-18 xl:px-12">
