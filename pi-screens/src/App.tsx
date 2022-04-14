@@ -1,8 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { BrowserRouter, BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from './Components/pages/Login';
-import Register from './Components/pages/Register';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 export interface IAppProps {};
 

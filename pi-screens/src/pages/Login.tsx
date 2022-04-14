@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export interface ILoginPageProps {};
 
@@ -29,10 +29,9 @@ const Login: React.FunctionComponent<ILoginPageProps> = (props) => {
             {/* input senha */}
             <div className="mt-4">
               <label>Password</label>
-              <input type="password" placeholder="Enter your password" 
+              <input type="password" placeholder="Enter your password"
               className="w-full px-4 py-3 rounded-lg bg-gray-100 mt-2 border focus:border-purple-400 focus:bg-white focus:outline-none"></input>
             </div>
-
 
             {/* checkbox */}
             <div className="flex items-start mb-2 mt-3">
