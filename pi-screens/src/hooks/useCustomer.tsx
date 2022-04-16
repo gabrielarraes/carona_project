@@ -11,6 +11,6 @@ export const useCustomer = () => {
   }, [])
 
   return {
-    createUser
+    createUser,
   }
 }

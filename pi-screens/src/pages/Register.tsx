@@ -9,26 +9,28 @@ const Register = () => {
 
   const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
-  const { createUser } = useCustomer();
   const errorRef = useRef();
 
-  const [email, setEmail] = useState('');
-  const [isValidEmail, setIsEmailValid] = useState(false);
+
+  const { createUser} = useCustomer();
+
+  const [email, setEmail] = useState(''); 
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
   const [username, setUsername] = useState('');
-  const [isValidUsername, setIsValidUsername] = useState(false);
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
 
   const [firstName, setFirstName] = useState('');
-  const [isValidFirstName, setIsValidFirstName] = useState(false);
+  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
 
   const [lastName, setLastName] = useState('');
-  const [isValidLastName, setIsValidLastName] = useState(false);
+  const [isLastNameValid, setIsLastNameValid] = useState(false);
 
   const [phoneNumber, setPhoneNumber] = useState(0);
-  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
+  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false);
 
   const [CPF, setCPF] = useState('');
-  const [isValidCPF, setIsValidCPF] = useState(false);
+  const [isCPFValid, setIsCPFValid] = useState(false);
 
   const [password, setPassword] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -44,20 +46,24 @@ const Register = () => {
   }, [])
 
   useEffect(() => {
-    setIsValidCPF(CPF_REGEX.test(CPF))
+    setIsCPFValid(CPF_REGEX.test(CPF))
   },[CPF])
 
   useEffect(() => {
-    setIsValidUsername(USERNAME_REGEX.test(username))
+    setIsUsernameValid(USERNAME_REGEX.test(username))
   },[username])
   
   useEffect(() => {
-    setIsValidFirstName(USERNAME_REGEX.test(firstName))
+    setIsFirstNameValid(USERNAME_REGEX.test(firstName))
   },[firstName])
 
   useEffect(() => {
-    setIsValidLastName(USERNAME_REGEX.test(lastName))
+    setIsLastNameValid(USERNAME_REGEX.test(lastName))
   },[lastName])
+
+  useEffect(() => {
+    setIsPhoneNumberValid(USERNAME_REGEX.test(phoneNumber.toString()))
+  },[phoneNumber])
 
   useEffect(() => {
     setErrorMsg('');
@@ -73,7 +79,8 @@ const Register = () => {
   },[password, matchPassword])
 
   //implementar await pra receber requisiçao do backend
-  const handleRegisterButton = useCallback(async () => {
+  const handleRegisterButton = useCallback(async () => 
+  { 
     await createUser({ 
       user: {
       username: username,
@@ -96,62 +103,61 @@ const Register = () => {
             
             <BasicInput
                 type="text"
-                className={isValidUsername}
+                className={isUsernameValid}
                 placeHolder="Username"
                 onChange={(e:any) => setUsername(e.target.value)}
-                valid={isValidUsername} 
+                valid={isUsernameValid} 
                 maxLenght={19}/>
 
             <BasicInput
                 type="text"
-                className={isValidFirstName}
+                className={isFirstNameValid}
                 placeHolder="First Name"
                 onChange={(e:any) => setFirstName(e.target.value)}
-                valid={isValidFirstName} 
+                valid={isFirstNameValid} 
                 maxLenght={20}/>
 
             <BasicInput
                 type="text"
-                className={isValidLastName}
+                className={isLastNameValid}
                 placeHolder="Last Name"
                 onChange={(e:any) => setLastName(e.target.value)}
-                valid={isValidLastName} 
+                valid={isLastNameValid} 
                 maxLenght={19}/>
 
             <BasicInput
                 type="text"
-                className={isValidPhoneNumber}
+                className={isPhoneNumberValid}
                 placeHolder="Phone Number"
                 onChange={(e:any) => setPhoneNumber(e.target.value)}
-                valid={isValidPhoneNumber} 
+                valid={isPhoneNumberValid} 
                 maxLenght={12}/>
                 
-
-            <p className={username && !isValidUsername ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
+            <p className={username && !isUsernameValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
               > Invalid Username
             </p>
 
             <BasicInput 
                 type="text"
-                className={isValidEmail}
+                className={isEmailValid}
                 placeHolder="Email"
                 onChange={(e:any) => setEmail(e.target.value)}
-                valid={isValidEmail} 
+                valid={isEmailValid} 
                 maxLenght={50} />
 
-            <p className={email && !isValidEmail ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
+            <p className={email && !isEmailValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
               > Invalid E-mail
             </p>
 
             <MaskedInput 
               value={CPF} 
               onChange={(e:any) => setCPF(e.target.value)}
-              className={ isValidCPF && CPF ?
+              className={ isCPFValid && CPF ?
                 "block border border-purple-700 focus:border-purple-500 focus:ring-purple-700 bg-gray-50 focus:bg-white w-full p-3 rounded-lg mb-2.5" : 
                 "block border border-gray-500 focus:border-rose-500 focus:ring-rose-700 bg-gray-50 focus:bg-white w-full p-3 rounded-lg mb-2.5" }             
             />
 
-            <p className={CPF && !isValidCPF ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
+            <p className={CPF && !isCPFValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
               > Invalid CPF
             </p>
 
@@ -188,16 +194,19 @@ const Register = () => {
             <button
                 type="submit"
                 disabled={
-                   isValidEmail === false ||
+                   isEmailValid === false ||
                    isPasswordValid === false || 
                    isMatchPasswordValid === false ||
-                   isValidCPF === false ||
-                   isValidUsername === false ||
-                   isValidFirstName === false ||
-                   isValidLastName === false ||
-                   isValidPhoneNumber === false 
+                   isCPFValid === false ||
+                   isUsernameValid === false ||
+                   isFirstNameValid === false ||
+                   isLastNameValid === false ||
+                   isPhoneNumberValid === false 
                 }               
-                className={isValidEmail === true && isPasswordValid === true && isMatchPasswordValid === true && isValidCPF === true && isValidUsername === true ?
+                className={
+                  isEmailValid === true && isPasswordValid === true &&
+                  isMatchPasswordValid === true &&
+                  isCPFValid === true && isFirstNameValid === true && isLastNameValid === true && isPhoneNumberValid === true && isUsernameValid === true ?
                    "w-full text-center py-3 rounded bg-purple-700 text-white hover:bg-purple-900 focus:outline-none my-1" :
                    "w-full text-center py-3 rounded bg-purple-300 text-white focus:outline-none my-1"}
                 onClick={handleRegisterButton}
@@ -211,5 +220,4 @@ const Register = () => {
   </div>
   )
 }
-
 export default Register;
