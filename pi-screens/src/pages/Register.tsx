@@ -1,216 +1,128 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { EMAIL_REGEX, PASSWORD_REGEX, CPF_REGEX, USERNAME_REGEX } from "../constants/constants";
-import BasicInput from "../Components/Input/BasicInput";
+import { EMAIL_REGEX, PASSWORD_REGEX, CPF_REGEX, USERNAME_REGEX} from "../constants/constants";
+import { defaultInputStyle } from "../constants/StyleConstants";
 import MaskedInput from '../Components/Input/InputMask'
 import { useCustomer } from "../hooks/useCustomer";
+import { useForm } from "react-hook-form";
+
+interface FormInput {
+  userName: string;
+  email: string;
+  firstName: string;
+  CPF: string;
+  phoneNumber: number
+  lastName: string;
+  password: string;
+  confirmPassword: string;
+}
 
 const Register = () => {
 
-  const navigate = useNavigate();
-  const emailRef = useRef<HTMLInputElement>(null);
-  const errorRef = useRef();
-
-
+  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm<FormInput>({
+    mode: 'all',
+    
+  });
   const { createUser} = useCustomer();
-
-  const [email, setEmail] = useState(''); 
-  const [isEmailValid, setIsEmailValid] = useState(false);
-
-  const [username, setUsername] = useState('');
-  const [isUsernameValid, setIsUsernameValid] = useState(false);
-
-  const [firstName, setFirstName] = useState('');
-  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
-
-  const [lastName, setLastName] = useState('');
-  const [isLastNameValid, setIsLastNameValid] = useState(false);
-
-  const [phoneNumber, setPhoneNumber] = useState(0);
-  const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(false);
-
   const [CPF, setCPF] = useState('');
-  const [isCPFValid, setIsCPFValid] = useState(false);
-
-  const [password, setPassword] = useState('');
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
-
-  const [matchPassword, setMatchPassword] = useState('');
-  const [isMatchPasswordValid, setIsMatchPasswordValid] = useState(false);
-
-  const [errorMsg, setErrorMsg] = useState('');
-  const [succes, setSucces] = useState(false);
-
-  useEffect(() => {
-    emailRef.current?.focus();
-  }, [])
-
-  useEffect(() => {
-    setIsCPFValid(CPF_REGEX.test(CPF))
-  },[CPF])
-
-  useEffect(() => {
-    setIsUsernameValid(USERNAME_REGEX.test(username))
-  },[username])
   
-  useEffect(() => {
-    setIsFirstNameValid(USERNAME_REGEX.test(firstName))
-  },[firstName])
-
-  useEffect(() => {
-    setIsLastNameValid(USERNAME_REGEX.test(lastName))
-  },[lastName])
-
-  useEffect(() => {
-    setIsPhoneNumberValid(USERNAME_REGEX.test(phoneNumber.toString()))
-  },[phoneNumber])
-
-  useEffect(() => {
-    setErrorMsg('');
-  }, [email, password, matchPassword])
-
-  useEffect(() => {
-    setIsEmailValid(EMAIL_REGEX.test(email));
-  }, [email])
-
-  useEffect(() => {
-    setIsPasswordValid(PASSWORD_REGEX.test(password));
-    setIsMatchPasswordValid(password === matchPassword);
-  },[password, matchPassword])
-
-  //implementar await pra receber requisiçao do backend
-  const handleRegisterButton = useCallback(async () => 
+  const onSubmit = useCallback(async (data: FormInput) => 
   { 
-    await createUser({ 
-      user: {
-      username: username,
-      password: password,
-      email: email
-    },
-      cpf: CPF,
-      firstName: firstName,
-      lastName: lastName,
-      phoneNumber: phoneNumber
-    })
-  }, [createUser, email,password,username,CPF,firstName,lastName,phoneNumber])
-  
+    try {
+      await createUser({ 
+        user: {
+        username: data.userName,
+        password: data.password,
+        email: data.email
+      },
+        cpf: CPF,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  }, [createUser, CPF]);
+
   return (
     <div className="bg-gradient-to-br to-purple-900 from-blue-400 min-h-screen flex flex-col">
 
     <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-      <form className="bg-white px-6 py-8 rounded shadow-2xl shadow-black text-black w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="bg-white px-6 py-8 rounded shadow-2xl shadow-black text-black w-full">
             <h1 className="mb-8 text-3xl text-center">Sign up</h1>
-            
-            <BasicInput
-                type="text"
-                className={isUsernameValid}
-                placeHolder="Username"
-                onChange={(e:any) => setUsername(e.target.value)}
-                valid={isUsernameValid} 
-                maxLenght={19}/>
+                      
+            <input 
+              className={defaultInputStyle}
+              {...register("userName", {required:true, maxLength:15, pattern: USERNAME_REGEX})} 
+              id="Username"
+              placeholder="Username"
+              onBlur={() => clearErrors("userName")}
+              style={{outline: 0}}          
+              autoComplete="off"                
+            />
 
-            <BasicInput
-                type="text"
-                className={isFirstNameValid}
-                placeHolder="First Name"
-                onChange={(e:any) => setFirstName(e.target.value)}
-                valid={isFirstNameValid} 
-                maxLenght={20}/>
+            {errors?.userName?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Username is required</p>}
+            {errors?.userName?.type === "pattern" && <p className="ml-1 mb-1 text-left text-rose-600 ico">Invalid Username</p>}
 
-            <BasicInput
-                type="text"
-                className={isLastNameValid}
-                placeHolder="Last Name"
-                onChange={(e:any) => setLastName(e.target.value)}
-                valid={isLastNameValid} 
-                maxLenght={19}/>
-
-            <BasicInput
-                type="text"
-                className={isPhoneNumberValid}
-                placeHolder="Phone Number"
-                onChange={(e:any) => setPhoneNumber(e.target.value)}
-                valid={isPhoneNumberValid} 
-                maxLenght={12}/>
-                
-            <p className={username && !isUsernameValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
-              > Invalid Username
-            </p>
-
-            <BasicInput 
-                type="text"
-                className={isEmailValid}
-                placeHolder="Email"
-                onChange={(e:any) => setEmail(e.target.value)}
-                valid={isEmailValid} 
-                maxLenght={50} />
-
-            <p className={email && !isEmailValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
-              > Invalid E-mail
-            </p>
-
+            <input 
+              className={defaultInputStyle}
+              {...register("firstName", {required:true, maxLength:20, pattern: USERNAME_REGEX})} 
+              id="firsName"
+              placeholder="First Name"
+              style={{outline: 0}}
+              autoComplete="off"
+            />
+            <input 
+              className={defaultInputStyle}
+              {...register("lastName", {required:true, maxLength:20, pattern: USERNAME_REGEX})} 
+              id="lastName"
+              placeholder="Last Name"
+              style={{outline: 0}}
+              autoComplete="off"
+            />
+            <input 
+              className={defaultInputStyle}
+              {...register("phoneNumber", {required:true, maxLength:9})} 
+              id="phoneNumber"
+              placeholder="Phone Number"
+              style={{outline: 0}}
+              autoComplete="off"
+            />
+            <input 
+              className={defaultInputStyle}
+              {...register("email", {required:true, maxLength:15, pattern: EMAIL_REGEX})} 
+              id="email"
+              placeholder="Email"
+              style={{outline: 0}}
+              autoComplete="off"
+            />
+            <input 
+              className={defaultInputStyle}
+              {...register("password", {required:true, maxLength:15, pattern: PASSWORD_REGEX})} 
+              id="password"
+              placeholder="Password"
+              style={{outline: 0}}
+              autoComplete="off"
+            />
             <MaskedInput 
               value={CPF} 
               onChange={(e:any) => setCPF(e.target.value)}
-              className={ isCPFValid && CPF ?
-                "block border border-purple-700 focus:border-purple-500 focus:ring-purple-700 bg-gray-50 focus:bg-white w-full p-3 rounded-lg mb-2.5" : 
-                "block border border-gray-500 focus:border-rose-500 focus:ring-rose-700 bg-gray-50 focus:bg-white w-full p-3 rounded-lg mb-2.5" }             
+              className={defaultInputStyle}            
             />
-
-            <p className={CPF && !isCPFValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
-              > Invalid CPF
-            </p>
-
-            <BasicInput 
-                type="password"
-                className={isPasswordValid}
-                placeHolder="Password"
-                onChange={(e:any) => setPassword(e.target.value)}
-                valid={isPasswordValid} 
-                maxLenght={24} />
-
-            <p className={password && !isPasswordValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
-              > Invalid Password <br></br>
-                4 - 24 characters,
-                At least 1 Special characcter <br></br>
-                At least 1 Uppercase letter , 
-                At least 1 Number
-            </p>
-                
             <input 
-                type="password"
-                className={isMatchPasswordValid && matchPassword ?
-                  "block border border-purple-700 focus:border-purple-500 focus:ring-purple-700 bg-gray-50 focus:bg-white w-full p-3 rounded-lg mb-2.5" : 
-                  "block border-gray-500 w-full focus:border-rose-500 focus:ring-white bg-gray-50 focus:bg-white p-3 rounded-lg mb-2.5"}
-                required
-                minLength={3}
-                onChange={(e) => setMatchPassword(e.target.value)}
-                placeholder="Retype Password" />
-
-            <p className={matchPassword && !isMatchPasswordValid ? "text-red-600 text-xs mb-2 ml-1 mt-1" : "hidden"}
-              >Passwords dont match <br></br>
-            </p>
-
-            <button
+              className={defaultInputStyle}
+              {...register("confirmPassword", {required:true, maxLength:15, pattern: PASSWORD_REGEX})} 
+              id="confirmPassword"
+              placeholder="Retype Password"
+              style={{outline: 0}}   
+              autoComplete="off"         
+            />
+            <input
                 type="submit"
-                disabled={
-                   isEmailValid === false ||
-                   isPasswordValid === false || 
-                   isMatchPasswordValid === false ||
-                   isCPFValid === false ||
-                   isUsernameValid === false ||
-                   isFirstNameValid === false ||
-                   isLastNameValid === false ||
-                   isPhoneNumberValid === false 
-                }               
-                className={
-                  isEmailValid === true && isPasswordValid === true &&
-                  isMatchPasswordValid === true &&
-                  isCPFValid === true && isFirstNameValid === true && isLastNameValid === true && isPhoneNumberValid === true && isUsernameValid === true ?
-                   "w-full text-center py-3 rounded bg-purple-700 text-white hover:bg-purple-900 focus:outline-none my-1" :
-                   "w-full text-center py-3 rounded bg-purple-300 text-white focus:outline-none my-1"}
-                onClick={handleRegisterButton}
-            >Create Account</button>
+                className="w-full text-center py-3 rounded bg-purple-700 text-white hover:bg-purple-900 focus:outline-none my-1"             
+            ></input>
         </form>
               
         <a className=" border-b border-blue text-white mt-6" href="localhost:3000">

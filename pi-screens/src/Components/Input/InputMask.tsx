@@ -5,7 +5,6 @@ import InputMask from 'react-input-mask';
 
 const MaskedInput = ({ value , onChange, className } : {value:any, onChange:any, className:string}) => {
   return <InputMask mask="999.999.999-99" 
-  value={value}
   onChange={onChange}
   autoComplete='off'
   style={{ outline: 0 }}

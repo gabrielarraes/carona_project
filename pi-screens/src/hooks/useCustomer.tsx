@@ -5,9 +5,14 @@ import { CustomerService } from '../services';
 export const useCustomer = () => {
 
   const createUser = useCallback(async (customer: Customer) => {
-    const { status } = await CustomerService.createUser(customer);
+    const { status , data} = await CustomerService.createUser(customer);
 
-    if(status !== 201) throw new Error();
+    if(status !== 201) {
+      console.log (status)
+    } 
+    else {
+      console.log(JSON.stringify(data));
+    }
   }, [])
 
   return {
