@@ -20,30 +20,27 @@ interface FormInput {
 
 const Register = () => {
 
-  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm<FormInput>({
-    mode: 'all',
-    
-  });
+  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm<FormInput>({ mode: 'all' });
   const { createUser} = useCustomer();
   const [CPF, setCPF] = useState('');
   
   const onSubmit = useCallback(async (data: FormInput) => 
   { 
-    try {
-      await createUser({ 
-        user: {
-        username: data.userName,
-        password: data.password,
-        email: data.email
-      },
-        cpf: CPF,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phoneNumber: data.phoneNumber
-      })
-    } catch (e) {
-      console.log(e);
-    }
+    await createUser({ 
+      user: {
+      username: data.userName,
+      password: data.password,
+      email: data.email
+    },
+      cpf: CPF,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phoneNumber: data.phoneNumber
+    }).catch( err => {
+      if(err.response.status === 400) {
+        console.log(err.response.data.message);
+      }
+     });
   }, [createUser, CPF]);
 
   return (

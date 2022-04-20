@@ -1,7 +1,9 @@
-import { Api } from '../providers';
+import { Axios } from './index';
 import { Customer } from '../interfaces'
 
-const createUser = (customer: Customer) => Api.post('/v1/customers', customer);
+const createUser = (customer: Customer) => Axios.post('/v1/customers', customer, {
+  headers: { 'Content-type': 'application/json' },
+});
 
 export const CustomerService = {
   createUser,
