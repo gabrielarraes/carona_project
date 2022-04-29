@@ -1,8 +1,9 @@
-import { useCallback, useContext } from "react";
+import { useCallback } from "react";
 import { defaultInputStyle } from "../constants/StyleConstants";
 import { useForm } from "react-hook-form";
 import { useCustomer } from "../hooks/useCustomer";
 import { useNavigate } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 
 interface FormInput {
@@ -85,7 +86,7 @@ const Login = () => {
 
               <div className="flex text-sm space-x-80">
                 <label htmlFor="remember" className="ml-2 font-medium text-black">Remember me</label>
-                <a href="#" className="">Forgot Password</a>
+                <Link to="/forgotPassword" className="">Forgot Password</Link>
               </div>
             </div>
        
