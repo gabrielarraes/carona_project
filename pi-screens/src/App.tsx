@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter, BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import ForgotPassword from './pages/ForgotPassword';
+import HomePage from './pages/HomePage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
-export interface IAppProps {};
-
-const App: React.FunctionComponent<IAppProps> = (props) => {
+function App() {
   return (
-    <BrowserRouter> 
-      <Routes>
-        <Route path="/login" element={<Login />}/>
-        <Route path="/register" element={<Register />}/>
-      </Routes>
-    </BrowserRouter>
-  )
+    <Routes>
+      <Route path="/login" element={<Login />}/>
+      <Route path="/register" element={<Register />}/>
+      <Route path="/forgotPassword" element={<ForgotPassword />}/>
+      <Route path="/homePage" element={<HomePage />}/>
+    </Routes>
+  );
 }
 export default App

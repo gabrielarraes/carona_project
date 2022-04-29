@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { EMAIL_REGEX, PASSWORD_REGEX, CPF_REGEX, USERNAME_REGEX} from "../constants/constants";
 import { defaultInputStyle } from "../constants/StyleConstants";
 import MaskedInput from '../Components/Input/InputMask'
 import { useCustomer } from "../hooks/useCustomer";
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface FormInput {
   userName: string;
@@ -19,6 +20,9 @@ interface FormInput {
 }
 
 const Register = () => {
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { 
     register,
@@ -51,13 +55,12 @@ const Register = () => {
         console.log(err.response.data);
       }
      });
-     console.log(Response)
   }, [createUser, CPF]);
 
   return (
     <div className="bg-gradient-to-br to-purple-900 from-blue-400 min-h-screen flex flex-col">
 
-    <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+    <div className="container max-w-md mx-auto flex-1 flex flex-col items-center justify-center px-2">
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white px-6 py-8 rounded shadow-2xl shadow-black text-black w-full">
             <h1 className="mb-8 text-3xl text-center">Sign up</h1>
                       
@@ -134,9 +137,9 @@ const Register = () => {
             ></input>
         </form>
               
-        <a className=" border-b border-blue text-white mt-6" href="localhost:3000">
+        <Link className=" border-b border-blue text-white mt-6" to="/login">
           Already have an account? Log in
-        </a>
+        </Link>
     </div>
   </div>
   )

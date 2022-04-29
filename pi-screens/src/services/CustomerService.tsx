@@ -7,7 +7,7 @@ const createUser = (customer: Customer) => Axios.post('/v1/customers', customer,
 
 const signIn = (user: Pick<User, 'username' | 'password'>) => Axios.post('/v1/auth/sign-in', user, {
   headers: { 'Content-type': 'application/json' },
-});
+})
 
 export const CustomerService = {
   createUser,
