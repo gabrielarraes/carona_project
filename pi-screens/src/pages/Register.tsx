@@ -20,27 +20,38 @@ interface FormInput {
 
 const Register = () => {
 
-  const { register, handleSubmit, formState: { errors }, clearErrors } = useForm<FormInput>({ mode: 'all' });
-  const { createUser} = useCustomer();
+  const { 
+    register,
+    handleSubmit,
+    formState: { errors },
+    clearErrors,
+
+  } = useForm<FormInput>({ 
+    mode: 'all',
+    
+  });
+
+  const { createUser } = useCustomer();
   const [CPF, setCPF] = useState('');
   
-  const onSubmit = useCallback(async (data: FormInput) => 
+  const onSubmit = useCallback(async (form: FormInput) => 
   { 
     await createUser({ 
       user: {
-      username: data.userName,
-      password: data.password,
-      email: data.email
+      username: form.userName,
+      password: form.password,
+      email: form.email
     },
       cpf: CPF,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      phoneNumber: data.phoneNumber
+      firstName: form.firstName,
+      lastName: form.lastName,
+      phoneNumber: form.phoneNumber
     }).catch( err => {
       if(err.response.status === 400) {
-        console.log(err.response.data.message);
+        console.log(err.response.data);
       }
      });
+     console.log(Response)
   }, [createUser, CPF]);
 
   return (
@@ -51,8 +62,8 @@ const Register = () => {
             <h1 className="mb-8 text-3xl text-center">Sign up</h1>
                       
             <input 
+              {...register("userName", {required:true, maxLength:25, pattern: USERNAME_REGEX})} 
               className={defaultInputStyle}
-              {...register("userName", {required:true, maxLength:15, pattern: USERNAME_REGEX})} 
               id="Username"
               placeholder="Username"
               onBlur={() => clearErrors("userName")}
@@ -64,40 +75,40 @@ const Register = () => {
             {errors?.userName?.type === "pattern" && <p className="ml-1 mb-1 text-left text-rose-600 ico">Invalid Username</p>}
 
             <input 
-              className={defaultInputStyle}
               {...register("firstName", {required:true, maxLength:20, pattern: USERNAME_REGEX})} 
+              className={defaultInputStyle}
               id="firsName"
               placeholder="First Name"
               style={{outline: 0}}
               autoComplete="off"
             />
             <input 
-              className={defaultInputStyle}
               {...register("lastName", {required:true, maxLength:20, pattern: USERNAME_REGEX})} 
+              className={defaultInputStyle}
               id="lastName"
               placeholder="Last Name"
               style={{outline: 0}}
               autoComplete="off"
             />
             <input 
+              {...register("phoneNumber", {required:true, maxLength:9})}
               className={defaultInputStyle}
-              {...register("phoneNumber", {required:true, maxLength:9})} 
               id="phoneNumber"
               placeholder="Phone Number"
               style={{outline: 0}}
               autoComplete="off"
             />
             <input 
-              className={defaultInputStyle}
               {...register("email", {required:true, maxLength:15, pattern: EMAIL_REGEX})} 
+              className={defaultInputStyle}
               id="email"
               placeholder="Email"
               style={{outline: 0}}
               autoComplete="off"
             />
             <input 
-              className={defaultInputStyle}
               {...register("password", {required:true, maxLength:15, pattern: PASSWORD_REGEX})} 
+              className={defaultInputStyle}
               id="password"
               placeholder="Password"
               style={{outline: 0}}
@@ -109,8 +120,8 @@ const Register = () => {
               className={defaultInputStyle}            
             />
             <input 
-              className={defaultInputStyle}
-              {...register("confirmPassword", {required:true, maxLength:15, pattern: PASSWORD_REGEX})} 
+              {...register("confirmPassword", {required:true, maxLength:15, pattern: PASSWORD_REGEX})}
+              className={defaultInputStyle} 
               id="confirmPassword"
               placeholder="Retype Password"
               style={{outline: 0}}   
@@ -118,7 +129,8 @@ const Register = () => {
             />
             <input
                 type="submit"
-                className="w-full text-center py-3 rounded bg-purple-700 text-white hover:bg-purple-900 focus:outline-none my-1"             
+                className="w-full block bg-purple-600 hover:bg-purple-800 text-white font-semibold rounded-lg px-4 py-3 mt-2"
+                value="Register"
             ></input>
         </form>
               

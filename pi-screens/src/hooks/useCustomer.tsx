@@ -1,21 +1,21 @@
 import { useCallback } from 'react';
-import { Customer } from '../interfaces';
+import { Customer, User } from '../interfaces';
 import { CustomerService } from '../services';
 
 export const useCustomer = () => {
 
   const createUser = useCallback(async (customer: Customer) => {
-    const { status , data } = await CustomerService.createUser(customer);
+    const resp = await CustomerService.createUser(customer);
+    console.log(resp.data);
+  }, [])
 
-    if(status !== 201) {
-      console.log(JSON.stringify(data));
-    } 
-    else {
-      console.log(JSON.stringify(data));
-    }
+  const signIn = useCallback(async (user: Pick<User, 'username' | 'password'>) => { 
+    const resp = await CustomerService.signIn(user);
+    console.log(resp.data);
   }, [])
 
   return {
     createUser,
-  }
+    signIn
+  }  
 }
