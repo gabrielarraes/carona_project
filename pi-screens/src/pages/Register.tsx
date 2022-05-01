@@ -21,9 +21,6 @@ interface FormInput {
 
 const Register = () => {
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
   const { 
     register,
     handleSubmit,
@@ -51,9 +48,7 @@ const Register = () => {
       lastName: form.lastName,
       phoneNumber: form.phoneNumber
     }).catch( err => {
-      if(err.response.status === 400) {
-        console.log(err.response.data);
-      }
+      console.log(err.response.data); 
      });
   }, [createUser, CPF]);
 

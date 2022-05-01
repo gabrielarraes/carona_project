@@ -28,15 +28,12 @@ const Login = () => {
 
   const onSubmit = useCallback (async (form:FormInput) => {
     
-    await signIn ({
-    username: form.userName,
-    password: form.password,
+  await signIn ({
+  username: form.userName,
+  password: form.password,
   }).catch (err => {
-      if(err.response.status === 400 || 401) {
-        console.log(err.response.data);
-    }
+    console.log(err.response.data);
   });
-  console.log()
 }, [signIn])
   
   return (
@@ -49,9 +46,7 @@ const Login = () => {
         <div className="w-full h-full">
 
           <h2 className="text-xl md:text-4xl font-serif -mt-10 font-bold text-center mb-20">Sign In</h2>
-
-          
-          
+ 
           <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
             <div className="">
                 <input 
