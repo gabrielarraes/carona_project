@@ -39,7 +39,8 @@ const Login = () => {
   return (
     <section className="flex flex-col md:flex-row h-screen items-center">
       <div className="h-screen bg-gradient-to-br to-purple-900 from-blue-400 lg:block md:w-1/2 xl:w-2/3 ">
-        <h1>Seja Bem Vindo Ao Carona Project</h1>
+        <h1 className="text-white text-4xl md:text-6xl mt-20 font-serif font-bold text-center">Seja Bem Vindo Ao Carona Project</h1>
+        <img className="object-scale-down ml-40 mt-14 w-2/3 h-2/3" src="carLogin.svg " alt="" />
       </div>
 
       <div className="bg-white w-full md:w-1/2 xl:w-1/3 px-7 lg:px-18 xl:px-8 xl:py-20">
@@ -59,10 +60,7 @@ const Login = () => {
                 onFocus={() => clearErrors("userName")}
               />
             </div>
-            
-            {errors?.userName?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Username is required</p>}
-
-            {/* input senha */}
+                      
             <div className="mt-4">
                 <input 
                   {...register("password", {required:true, maxLength:15})} 
