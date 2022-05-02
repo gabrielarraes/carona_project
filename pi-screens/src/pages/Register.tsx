@@ -60,7 +60,7 @@ const Register = () => {
             <h1 className="mb-8 text-3xl text-center">Sign up</h1>
                       
             <input 
-              {...register("userName", {required:true, maxLength:25, pattern: USERNAME_REGEX})} 
+              {...register("userName", {required:true, maxLength:25})} 
               className={defaultInputStyle}
               id="Username"
               placeholder="Username"
@@ -68,10 +68,8 @@ const Register = () => {
               style={{outline: 0}}          
               autoComplete="off"                
             />
-
             {errors?.userName?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Username is required</p>}
-            {errors?.userName?.type === "pattern" && <p className="ml-1 mb-1 text-left text-rose-600 ico">Invalid Username</p>}
-
+            
             <input 
               {...register("firstName", {required:true, minLength:2})} 
               className={defaultInputStyle}
@@ -115,7 +113,7 @@ const Register = () => {
             {errors?.phoneNumber?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Phone Number is required</p>}
       
             <input 
-              {...register("email", {required:true, maxLength:15, pattern: EMAIL_REGEX})} 
+              {...register("email", {required:true, maxLength:50, pattern: EMAIL_REGEX})} 
               className={defaultInputStyle}
               id="email"
               placeholder="Email"

@@ -26,7 +26,7 @@ export const useCustomer = () => {
         localStorage.setItem('user', JSON.stringify(resp.data));
         console.log(localStorage.getItem("user"));
         navigate("/home");
-      } 
+      }
       return resp.data;
     });
   }, [navigate])

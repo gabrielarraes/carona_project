@@ -1,6 +1,5 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { PASSWORD_REGEX } from "../constants/constants";
 import { defaultInputStyle } from "../constants/StyleConstants";
 
@@ -47,7 +46,7 @@ const ResetPassword = () => {
               autoComplete="off"
             />
 
-            {errors?.password?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Password is required</p>}
+            {errors?.password?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Type your new Password</p>}
             {errors?.password?.type === "pattern" && <p className="ml-1 mb-1 text-left text-rose-600 ico">Password must have: 
               <br></br>
               1 Uppercase letter
@@ -70,7 +69,7 @@ const ResetPassword = () => {
               <input 
                 type="submit" 
                 className="w-full block bg-purple-600 h-14 hover:bg-purple-800 text-white font-semibold rounded-lg px-4 py-3 mt-2"
-                value="Send"
+                value="Confirm"
               ></input>
            </div>
           </form>

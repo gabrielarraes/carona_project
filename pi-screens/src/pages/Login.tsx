@@ -19,9 +19,8 @@ const Login = () => {
   const { 
     register,
     handleSubmit,
-    formState: { errors },
+    //formState: { errors },
     clearErrors,
-
   } = useForm<FormInput>({ 
     mode: "onSubmit",
   });
@@ -103,7 +102,6 @@ const Login = () => {
                 }}
               ></input>
            </div>
-            
           </form>
         </div>
       </div>
