@@ -1,14 +1,28 @@
+import React from "react";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import { PASSWORD_REGEX } from "../constants/constants";
 import { defaultInputStyle } from "../constants/StyleConstants";
+import { useCustomer } from "../hooks/useCustomer";
 
 interface FormInput {
   password: string,
   confirmPassword: string,
 }
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 const ResetPassword = () => {
+
+  
+  let query = useQuery();
+  const { resetPassword } = useCustomer();
+  
 
   const { 
     register,
@@ -20,9 +34,11 @@ const ResetPassword = () => {
   });
 
   const onSubmit = useCallback (async (form:FormInput) => {
-    
-  }, [])
-  
+    const token = query.get('token') as string;
+    await resetPassword(form.password,token)
+    .catch((err)=>{console.log(err.response.data)})
+  }, [query, resetPassword])
+
   return (
     <section className="flex flex-col md:flex-row h-screen items-center ">
       <div className="h-screen bg-gradient-to-br to-purple-900 from-blue-400 lg:block md:w-1/2 xl:w-2/3 ">

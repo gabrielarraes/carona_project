@@ -125,6 +125,12 @@ const Register = () => {
             {errors?.email?.type === "required" && <p className="ml-1 mb-1 text-left text-rose-600">Email is required</p>}
             {errors?.email?.type === "pattern" && <p className="ml-1 mb-1 text-left text-rose-600 ico">Invalid E-mail</p>}
 
+            <MaskedInput 
+              value={CPF} 
+              onChange={(e:any) => setCPF(e.target.value)}
+              className={defaultInputStyle}            
+            />
+
             <input 
               {...register("password", {required:true, maxLength:15, pattern: PASSWORD_REGEX})} 
               className={defaultInputStyle}
@@ -144,12 +150,7 @@ const Register = () => {
               <br></br>
               1 Number
             </p>}
-
-            <MaskedInput 
-              value={CPF} 
-              onChange={(e:any) => setCPF(e.target.value)}
-              className={defaultInputStyle}            
-            />
+            
             <input 
               {...register("confirmPassword", {required:true, maxLength:15, pattern: PASSWORD_REGEX})}
               className={defaultInputStyle} 

@@ -1,13 +1,16 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { defaultInputStyle } from "../constants/StyleConstants";
+import { useCustomer } from "../hooks/useCustomer";
 
 interface FormInput {
-  Email: string;
+  email: string;
 }
 
 const ForgotPassword = () => {
+
+  const { forgotPassword } = useCustomer();
 
   const { 
     register,
@@ -17,8 +20,10 @@ const ForgotPassword = () => {
   });
 
   const onSubmit = useCallback (async (form:FormInput) => {
-    
-  }, [])
+    await forgotPassword(form.email).catch((err) => {
+      console.log(err.response.data);
+    });
+  }, [forgotPassword])
   
   return (
     <section className="flex flex-col md:flex-row h-screen items-center ">
@@ -35,9 +40,9 @@ const ForgotPassword = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="mt-4">                                            
             <div className="mt-4">
                 <input 
-                  {...register("Email", {required:true, maxLength:28})} 
+                  {...register("email", {required:true, maxLength:28})} 
                   className={defaultInputStyle}
-                  id="Email"
+                  id="email"
                   placeholder="Enter Your E-Mail"
                   style={{outline: 0}}
                   autoComplete="off"

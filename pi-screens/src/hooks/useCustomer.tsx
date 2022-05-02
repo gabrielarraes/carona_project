@@ -31,8 +31,27 @@ export const useCustomer = () => {
     });
   }, [navigate])
 
+  const forgotPassword = useCallback(async (email: string) => {
+    await CustomerService.forgotPassword(email)
+    .then((resp) => {
+      console.log(resp.data);
+    })
+  },[])
+
+  const resetPassword = useCallback(async (newPassword: string,token:string) => {
+    await CustomerService.resetPassword(newPassword,token)
+    .then((resp) => {
+      console.log(resp.data)
+      if (resp.status === 200) {
+        navigate("/login")
+      }
+    })
+  },[navigate])
+
   return {
     createUser,
-    signIn
+    signIn,
+    forgotPassword,
+    resetPassword
   }  
 }
